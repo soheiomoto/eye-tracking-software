@@ -1,0 +1,14 @@
+Python : 3.12.5
+Edition : Windows 11 Home
+OS build : 22631.3880
+Visual Studio 2022 : v17.4.1
+
+[Python Module Requirements]
+numpy==2.1.0
+pip==24.2
+beam-eye-tracker==1.1.1
+
+[User variables]
+Variable Name : Path
+C:\Users\www\AppData\Local\Programs\Python\Python312\Scripts\
+C:\Users\www\AppData\Local\Programs\Python\Python312\
