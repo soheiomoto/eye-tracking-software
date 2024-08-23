@@ -3,9 +3,9 @@
   - version 1.0.0
 
   Dependencies:
-  - Python 3.12.5
-  - beam-eye-tracker
-  - NumPy
+  - beam-eye-tracker          1.1.1
+  - numpy                     2.1.0
+  - pyinstaller               6.10.0
 """
 
 import os
