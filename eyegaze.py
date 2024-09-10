@@ -49,7 +49,7 @@ def gaze_tracker():
                     print("      - Coordinates:       <x=%5.3f px,   y=%5.3f px>" % (screen_gaze.x, screen_gaze.y),file=f)
                 
                 #30hzでデータを取得
-                time.sleep(1 / 30)
+                time.sleep(1 / 60)
             else:
                 #APIとの通信が失われている場合は1秒おきにエラー文をプリント
                 MESSAGE_PERIOD_IN_SECONDS = 1
