@@ -13,15 +13,18 @@
 ![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code_1.92.1-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
 ![Python](https://img.shields.io/badge/python_3.12.5-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
-| 言語・フレームワーク  | バージョン |
-| --------------------- | ---------- |
-| Django                | 4.2.1      |
-| Django Rest Framework | 3.14.0     |
-| MySQL                 | 8.0        |
-| Node.js               | 16.17.0    |
-| React                 | 18.2.0     |
-| Next.js               | 13.4.6     |
-| Terraform             | 1.3.6      |
+| Pythonモジュール           | バージョン |
+| ------------------------- | -------- |
+| altgraph                  | 0.17.4   |
+| beam-eye-tracker          | 1.1.1    |
+| numpy                     | 2.1.0    |
+| packaging                 | 24.1     |
+| pefile                    | 2023.2.7 |
+| pip                       | 24.2     |
+| pyinstaller               | 6.10.0   |
+| pyinstaller-hooks-contrib | 2024.8   |
+| pywin32-ctypes            | 0.2.3    |
+| setuptools                | 73.0.1   |
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
