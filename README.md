@@ -3,13 +3,11 @@
 ## 目次
 
 1. [開発環境](#開発環境)
-2. [ディレクトリ構成](#ディレクトリ構成)
+2. [実験手順](#実験手順)
 3. [開発環境構築](#開発環境構築)
 4. [トラブルシューティング](#トラブルシューティング)
 
 ## 開発環境
-
-<!-- 言語、フレームワーク、ミドルウェア、インフラの一覧とバージョンを記載 -->
 
 ![Windows 11](https://img.shields.io/badge/Windows%2011-%230079d5.svg?style=for-the-badge&logo=Windows%2011&logoColor=white)
 ![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code_1.92.1-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
@@ -17,7 +15,6 @@
 
 | 言語・フレームワーク  | バージョン |
 | --------------------- | ---------- |
-| Python                | 3.11.4     |
 | Django                | 4.2.1      |
 | Django Rest Framework | 3.14.0     |
 | MySQL                 | 8.0        |
@@ -26,62 +23,9 @@
 | Next.js               | 13.4.6     |
 | Terraform             | 1.3.6      |
 
-その他のパッケージのバージョンは pyproject.toml と package.json を参照してください
-
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
-## ディレクトリ構成
-
-<!-- Treeコマンドを使ってディレクトリ構成を記載 -->
-
-❯ tree -a -I "node_modules|.next|.git|.pytest_cache|static" -L 2
-.
-├── .devcontainer
-│   └── devcontainer.json
-├── .env
-├── .github
-│   ├── action
-│   ├── release-drafter.yml
-│   └── workflows
-├── .gitignore
-├── Makefile
-├── README.md
-├── backend
-│   ├── .vscode
-│   ├── application
-│   ├── docs
-│   ├── manage.py
-│   ├── output
-│   ├── poetry.lock
-│   ├── project
-│   └── pyproject.toml
-├── containers
-│   ├── django
-│   ├── front
-│   ├── mysql
-│   └── nginx
-├── docker-compose.yml
-├── frontend
-│   ├── .gitignore
-│   ├── README.md
-│   ├── __test__
-│   ├── components
-│   ├── features
-│   ├── next-env.d.ts
-│   ├── package-lock.json
-│   ├── package.json
-│   ├── pages
-│   ├── postcss.config.js
-│   ├── public
-│   ├── styles
-│   ├── tailwind.config.js
-│   └── tsconfig.json
-└── infra
-    ├── .gitignore
-    ├── docker-compose.yml
-    ├── main.tf
-    ├── network.tf
-    └── variables.tf
+## 実験手順
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
