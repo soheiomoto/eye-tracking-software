@@ -4,7 +4,7 @@
 
   Dependencies:
   - beam-eye-tracker          1.1.1
-  - numpy                     2.1.0
+  - numpy                     2.1.2
   - pyinstaller               6.10.0
 """
 
