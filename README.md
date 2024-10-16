@@ -17,14 +17,14 @@
 | ------------------------- | -------- |
 | altgraph                  | 0.17.4   |
 | beam-eye-tracker          | 1.1.1    |
-| numpy                     | 2.1.0    |
+| numpy                     | 2.1.2    |
 | packaging                 | 24.1     |
 | pefile                    | 2023.2.7 |
 | pip                       | 24.2     |
 | pyinstaller               | 6.10.0   |
 | pyinstaller-hooks-contrib | 2024.8   |
 | pywin32-ctypes            | 0.2.3    |
-| setuptools                | 73.0.1   |
+| setuptools                | 75.1.0   |
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
