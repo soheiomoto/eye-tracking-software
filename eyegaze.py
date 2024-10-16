@@ -1,6 +1,6 @@
 """
   eyegaze.py:
-  - version 1.1.1
+  - version 1.1.0
 
   Dependencies:
   - beam-eye-tracker          1.1.1
