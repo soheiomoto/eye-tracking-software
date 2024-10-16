@@ -9,8 +9,6 @@
 """
 
 # プログラムに必要なモジュールのインポート
-import os
-import sys
 import csv
 import time
 import numpy as np
@@ -62,7 +60,7 @@ def gaze_tracker():
                 # データ行の書き込み
                 csv_writer.writerow([record_time, gaze_status, screen_gaze_x, screen_gaze_y])
                 
-                # 30hzでデータを収集
+                # 60hzでデータを収集
                 time.sleep(1 / 60)
             else:
                 # 接続が切れている場合は毎秒エラー文を表示
