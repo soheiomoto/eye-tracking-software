@@ -1,7 +1,0 @@
-  Environment Dependencies:
-  - Python                    3.12.5
-  - Windows 11 Home           22631.3880
-
-  User Variable Path:
-  - C:\Users\www\AppData\Local\Programs\Python\Python312\Scripts\
-  - C:\Users\www\AppData\Local\Programs\Python\Python312\
