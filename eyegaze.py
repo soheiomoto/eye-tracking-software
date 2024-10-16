@@ -1,6 +1,6 @@
 """
   eyegaze.py:
-  - version 1.1.0
+  - version 1.1.1
 
   Dependencies:
   - beam-eye-tracker          1.1.1
@@ -8,22 +8,18 @@
   - pyinstaller               6.10.0
 """
 
+# プログラムに必要なモジュールのインポート
 import os
 import sys
 import csv
 import time
 import numpy as np
 from datetime import datetime
-
-# Set the path to the SDK directory
-path = os.getcwd()
-path_name = path + "\\BeamSDK-Windows64-1.1.0\\API\\python"
-sys.path.append(path_name)
-
 from eyeware.client import TrackerClient
 
 tracker = TrackerClient()
 
+# 時間記録・ファイル名用の変数設定
 now = datetime.now()
 time_str = now.strftime("%H%M%S")
 name = 'tracker_record_'+time_str+'.csv'
@@ -32,7 +28,7 @@ def gaze_tracker():
     with open(name, 'w', newline='') as csvfile:
         csv_writer = csv.writer(csvfile)
         
-        # Write the header row
+        # CSVファイル内のヘッダー行の作成
         csv_writer.writerow(["Record Time", "Gaze Lost", "X Coordinate", "Y Coordinate"])
         
         while True:
@@ -43,7 +39,7 @@ def gaze_tracker():
                 head_pose = tracker.get_head_pose_info()
                 head_is_lost = head_pose.is_lost
                 
-                # Initialize variables for gaze data
+                # 座標情報初期化
                 screen_gaze_x = None
                 screen_gaze_y = None
                 
@@ -63,13 +59,13 @@ def gaze_tracker():
                     screen_gaze_x = screen_gaze.x
                     screen_gaze_y = screen_gaze.y
                 
-                # Write the data row
+                # データ行の書き込み
                 csv_writer.writerow([record_time, gaze_status, screen_gaze_x, screen_gaze_y])
                 
-                # 30 Hz data retrieval
+                # 30hzでデータを収集
                 time.sleep(1 / 60)
             else:
-                # Print error message every second if connection is lost
+                # 接続が切れている場合は毎秒エラー文を表示
                 MESSAGE_PERIOD_IN_SECONDS = 1
                 time.sleep(MESSAGE_PERIOD_IN_SECONDS - time.monotonic() % MESSAGE_PERIOD_IN_SECONDS)
                 print("No connection with tracker server")
