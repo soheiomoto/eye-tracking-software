@@ -1,13 +1,13 @@
 """
   eyegaze.py:
-  - version 1.1.1
+  - version 1.1.2
 
   Dependencies:
   - beam-eye-tracker          1.1.1
   - numpy                     2.1.2
   - pyinstaller               6.10.0
 
-  hiddenimports:
+  hiddenimports for pyinstaller:
   - numpy.core.multiarray
 """
 
@@ -32,11 +32,13 @@ def gaze_tracker():
         # CSVファイル内のヘッダー行の作成
         csv_writer.writerow(["Record Time", "Gaze Lost", "X Coordinate", "Y Coordinate"])
         
+        # 現在時刻の初期化
+        last_print_time = time.time()
+        
         while True:
             if tracker.connected:
                 record_now = datetime.now()
                 record_time = record_now.strftime("%H%M%S%f")
-                status_time = record_now.strftime("%H%M%S")
                 
                 head_pose = tracker.get_head_pose_info()
                 head_is_lost = head_pose.is_lost
@@ -54,17 +56,21 @@ def gaze_tracker():
                 
                 if screen_gaze_is_lost:
                     gaze_status = "Lost"
-                    print('lost')
                     screen_gaze_x = None
                     screen_gaze_y = None
                 else:
                     gaze_status = "Visible"
-                    print('visible')
                     screen_gaze_x = screen_gaze.x
                     screen_gaze_y = screen_gaze.y
                 
                 # データ行の書き込み
                 csv_writer.writerow([record_time, gaze_status, screen_gaze_x, screen_gaze_y])
+                
+                # ステータスを毎秒プリントアウト
+                current_time = time.time()
+                if current_time - last_print_time >= 1:
+                    print(gaze_status)
+                    last_print_time = current_time
                 
                 # 60hzでデータを収集
                 time.sleep(1 / 60)
