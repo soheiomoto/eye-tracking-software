@@ -5,7 +5,7 @@
   Dependencies:
   - beam-eye-tracker          1.1.1
   - numpy                     2.1.2
-  - pyinstaller               6.10.0
+  - pyinstaller               6.11.0
 
   hiddenimports for pyinstaller:
   - numpy.core.multiarray

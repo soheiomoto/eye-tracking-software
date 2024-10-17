@@ -21,10 +21,10 @@
 | packaging                 | 24.1     |
 | pefile                    | 2023.2.7 |
 | pip                       | 24.2     |
-| pyinstaller               | 6.10.0   |
-| pyinstaller-hooks-contrib | 2024.8   |
+| pyinstaller               | 6.11.0   |
+| pyinstaller-hooks-contrib | 2024.9   |
 | pywin32-ctypes            | 0.2.3    |
-| setuptools                | 75.1.0   |
+| setuptools                | 75.2.0   |
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
