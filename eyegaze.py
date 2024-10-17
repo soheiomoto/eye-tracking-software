@@ -1,6 +1,6 @@
 """
   eyegaze.py:
-  - version 1.1.0
+  - version 1.1.1
 
   Dependencies:
   - beam-eye-tracker          1.1.1
@@ -28,11 +28,13 @@ def gaze_tracker():
         
         # CSVファイル内のヘッダー行の作成
         csv_writer.writerow(["Record Time", "Gaze Lost", "X Coordinate", "Y Coordinate"])
+
+        status = 0
         
         while True:
             if tracker.connected:
                 record_now = datetime.now()
-                record_time = record_now.strftime("%H%M%S")
+                record_time = record_now.strftime("%H%M%S%f")
                 
                 head_pose = tracker.get_head_pose_info()
                 head_is_lost = head_pose.is_lost
@@ -52,10 +54,17 @@ def gaze_tracker():
                     gaze_status = "Lost"
                     screen_gaze_x = None
                     screen_gaze_y = None
+                    if status % 30 == 0:
+                        print("lost")
+                    status = status + 1
                 else:
                     gaze_status = "Visible"
+                    print("visible")
                     screen_gaze_x = screen_gaze.x
                     screen_gaze_y = screen_gaze.y
+                    if status % 30 != 0:
+                        print("visible")
+                    status = status + 1
                 
                 # データ行の書き込み
                 csv_writer.writerow([record_time, gaze_status, screen_gaze_x, screen_gaze_y])
