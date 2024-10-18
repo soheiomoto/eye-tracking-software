@@ -66,7 +66,7 @@ def gaze_tracker():
                 # データ行の書き込み
                 csv_writer.writerow([record_time, gaze_status, screen_gaze_x, screen_gaze_y])
                 
-                # ステータスを毎秒プリントアウト
+                # 画面注視ステータスを毎秒プリントアウト
                 current_time = time.time()
                 if current_time - last_print_time >= 1:
                     print(gaze_status)
