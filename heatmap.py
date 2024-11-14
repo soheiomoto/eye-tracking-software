@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # CSVファイルの読み込み（例: "gaze_data.csv"）
-df = pd.read_csv('C://Users//www//Desktop//analyze//1st-Japanese-J1-01.csv')  # 'timestamp', 'x', 'y' カラムがあると仮定
+df = pd.read_csv('C://Users//PC_User//iCloudDrive//Documents//01_University//02_Research//Working-Directory//eye-tracking-software//Experiment-Data-1st//1st-English//1st-English-J1//1st-English-J1-01.csv')
 
 # データの確認
 print("Original data:")
