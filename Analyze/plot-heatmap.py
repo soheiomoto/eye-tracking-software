@@ -1,3 +1,5 @@
+#proceedでも入力可能
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -17,12 +19,16 @@ if file_path:
     print("Original data:")
     print(df.head())
 
-    # timestampの範囲を指定
-    timestamp_start = 163427
-    timestamp_end = 163434
+    # 複数のタイムスタンプ範囲を指定
+    timestamp_ranges = [(163407, 163426), (163427, 163434)]  # 例: 複数の範囲
 
-    # timestamp範囲でデータをフィルタリング
-    df_filtered = df[(df['timestamp'] >= timestamp_start) & (df['timestamp'] <= timestamp_end)]
+    # フィルタリングしたデータを格納するためのデータフレーム
+    df_filtered = pd.DataFrame()
+
+    # 各タイムスタンプ範囲でデータをフィルタリング
+    for start, end in timestamp_ranges:
+        df_range = df[(df['timestamp'] >= start) & (df['timestamp'] <= end)]
+        df_filtered = pd.concat([df_filtered, df_range], ignore_index=True)
 
     # 座標が(0, 0)のデータを外れ値として除外
     df_filtered = df_filtered[(df_filtered['x'] != 0) | (df_filtered['y'] != 0)]
@@ -39,12 +45,12 @@ if file_path:
     plt.xlim(0, 1920)
     plt.ylim(0, 1080)
 
-    # Y軸の反転（ここで反転を行う）
+    # Y軸の反転
     plt.gca().invert_yaxis()
 
-    #plt.title(f'Gaze Heatmap (Y-Axis Flipped in Output) for Timestamps {timestamp_start} to {timestamp_end}')
     plt.xlabel('X Coordinate')
     plt.ylabel('Y Coordinate')
+    plt.title('Gaze Heatmap (Multiple Timestamp Ranges)')
     plt.show()
 else:
     print("No file selected.")

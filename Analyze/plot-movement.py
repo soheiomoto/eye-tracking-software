@@ -49,9 +49,8 @@ def plot_gaze_trajectory(df, step=1.0):
         ax.annotate("", xy=(x2, y2), xytext=(x1, y1),
                     arrowprops=dict(facecolor='blue', edgecolor='blue', arrowstyle="->", lw=1))
 
-    plt.title("Gaze Trajectory (Approximate)")
-    plt.xlabel("X")
-    plt.ylabel("Y")
+    plt.xlabel("X Coordinate")
+    plt.ylabel("Y Coordinate")
     plt.show()
 
 # メイン関数
