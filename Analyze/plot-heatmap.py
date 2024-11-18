@@ -50,7 +50,7 @@ if file_path:
 
     plt.xlabel('X Coordinate')
     plt.ylabel('Y Coordinate')
-    plt.title('Gaze Heatmap (Multiple Timestamp Ranges)')
+    #plt.title('Gaze Heatmap (Multiple Timestamp Ranges)')
     plt.show()
 else:
     print("No file selected.")
