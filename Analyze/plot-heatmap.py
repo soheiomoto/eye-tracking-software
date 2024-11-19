@@ -1,5 +1,3 @@
-#proceedでも入力可能
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -19,8 +17,24 @@ if file_path:
     print("Original data:")
     print(df.head())
 
-    # 複数のタイムスタンプ範囲を指定
-    timestamp_ranges = [(163407, 163426), (163427, 163434)]  # 例: 複数の範囲
+    # 標準入力でタイムスタンプ範囲を指定
+    print("\nEnter timestamp ranges (e.g., 163407-163426,163427-163434).")
+    user_input = input("Timestamp ranges: ").strip()
+
+    if user_input:
+        try:
+            timestamp_ranges = [
+                tuple(map(int, pair.split('-')))
+                for pair in user_input.split(',')
+            ]
+        except ValueError:
+            print("Error: Invalid input format for timestamp ranges.")
+            print("Please use the format: start1-end1,start2-end2,...")
+            exit(1)
+    else:
+        print("Error: Invalid input format for timestamp ranges.")
+        print("Please use the format: start1-end1,start2-end2,...")
+        exit(1)
 
     # フィルタリングしたデータを格納するためのデータフレーム
     df_filtered = pd.DataFrame()

@@ -15,8 +15,8 @@ data = pd.read_csv(file_path)  # 視線データCSVを読み込み
 data = data[['timestamp', 'x', 'y']]  # timestamp, x, y列のみ抽出
 
 # 3. timestampの範囲指定（hhmmss形式で指定）
-start_time = "163407"  # 開始時間（hhmmss形式）
-end_time = "163500"    # 終了時間（hhmmss形式）
+start_time = input("開始時間を入力してください (hhmmss形式): ")  # 開始時間を標準入力
+end_time = input("終了時間を入力してください (hhmmss形式): ")    # 終了時間を標準入力
 
 # timestampをdatetime形式に変換
 data['timestamp'] = pd.to_datetime(data['timestamp'], format='%H%M%S').dt.strftime('%H%M%S')
