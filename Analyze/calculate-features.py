@@ -39,22 +39,12 @@ def calculate_fixation_duration(df):
     fixation_duration = fixation_df.groupby('classification').size()  # 注視時間（ms）
     return fixation_duration.sum()
 
-# 平均注視時間（Average Fixation Duration）の計算
-def calculate_avg_fixation_duration(df):
-    fixation_df = df[df['classification'] == 'fixation']
-    return fixation_df['timestamp'].count() / len(fixation_df)
-
 # 平均注視位置（x, y）の計算
 def calculate_avg_fixation_location(df):
     fixation_df = df[df['classification'] == 'fixation']
     avg_x = fixation_df['x'].mean()
     avg_y = fixation_df['y'].mean()
     return avg_x, avg_y
-
-# 注視頻度（Fixation Frequency）の計算
-def calculate_fixation_frequency(df):
-    fixation_df = df[df['classification'] == 'fixation']
-    return fixation_df.shape[0]
 
 # 平均サッケード振幅（Average Saccade Amplitude）の計算
 def calculate_avg_saccade_amplitude(df):
@@ -82,15 +72,6 @@ def calculate_avg_velocity(df):
 def calculate_velocity_std_dev(df):
     velocities = df['velocity'].values
     return np.std(velocities)
-
-# 反応時間（Reaction Time）の計算
-def calculate_reaction_time(df, threshold=0.5):
-    fixation_df = df[df['classification'] == 'fixation']
-    for i in range(1, len(fixation_df)):
-        if abs(fixation_df['x'].iloc[i] - fixation_df['x'].iloc[i-1]) > threshold or abs(fixation_df['y'].iloc[i] - fixation_df['y'].iloc[i-1]) > threshold:
-            reaction_time = fixation_df['time_seconds'].iloc[i] - fixation_df['time_seconds'].iloc[i-1]
-            return reaction_time
-    return None
 
 # 視覚的探索距離（Search Distance）の計算
 def calculate_search_distance(df):
@@ -140,30 +121,24 @@ def main():
 
     # 特徴量の計算
     fixation_duration = calculate_fixation_duration(df_filtered)
-    avg_fixation_duration = calculate_avg_fixation_duration(df_filtered)
     avg_fixation_location = calculate_avg_fixation_location(df_filtered)
-    fixation_frequency = calculate_fixation_frequency(df_filtered)
     avg_saccade_amplitude = calculate_avg_saccade_amplitude(df_filtered)
     max_saccade_amplitude = calculate_max_saccade_amplitude(df_filtered)
     saccade_count = calculate_saccade_count(df_filtered)
     avg_velocity = calculate_avg_velocity(df_filtered)
     velocity_std_dev = calculate_velocity_std_dev(df_filtered)
-    reaction_time = calculate_reaction_time(df_filtered)
     search_distance = calculate_search_distance(df_filtered)
     search_uniformity = calculate_search_uniformity(df_filtered)
     avg_gaze_rotation = calculate_avg_gaze_rotation(df_filtered)
 
     # 結果を表示
     print("Fixation Duration (ms):", fixation_duration)
-    print("Average Fixation Duration (ms):", avg_fixation_duration)
     print("Average Fixation Location (x, y):", avg_fixation_location)
-    print("Fixation Frequency:", fixation_frequency)
     print("Average Saccade Amplitude (px):", avg_saccade_amplitude)
     print("Max Saccade Amplitude (px):", max_saccade_amplitude)
     print("Saccade Count:", saccade_count)
     print("Average Velocity:", avg_velocity)
     print("Velocity Std Dev:", velocity_std_dev)
-    print("Reaction Time (ms):", reaction_time)
     print("Search Distance (px):", search_distance)
     print("Search Uniformity:", search_uniformity)
     print("Average Gaze Rotation (rad):", avg_gaze_rotation)
