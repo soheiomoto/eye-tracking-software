@@ -1,3 +1,4 @@
+# 必要なモジュールのインポート
 import pandas as pd
 import numpy as np
 import tkinter as tk
@@ -73,7 +74,6 @@ def main():
     plt.legend()
     plt.xlabel("Time")
     plt.ylabel("Velocity")
-    plt.title("Velocity and Dynamic Threshold")
     plt.show()
 
 if __name__ == "__main__":

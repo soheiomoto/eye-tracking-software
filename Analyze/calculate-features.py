@@ -1,3 +1,4 @@
+# 必要なモジュールのインポート
 import pandas as pd
 import numpy as np
 import tkinter as tk
@@ -8,7 +9,7 @@ from math import radians
 # CSVファイル選択ダイアログ
 def load_csv():
     root = tk.Tk()
-    root.withdraw()  # Tkinterのメインウィンドウを表示しない
+    root.withdraw()
     file_path = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv")])
     return file_path
 
@@ -131,8 +132,8 @@ def main():
     df = df[(df['x'] != 0) & (df['y'] != 0)]
 
     # ユーザーにhhmmss形式で時間範囲を指定
-    start_time_str = input("開始時間をhhmmss形式で入力してください: ")
-    end_time_str = input("終了時間をhhmmss形式で入力してください: ")
+    start_time_str = input("開始時間を入力してください (hhmmss形式): ")
+    end_time_str = input("終了時間を入力してください (hhmmss形式): ")
 
     # 時間範囲でフィルタリング
     df_filtered = filter_data(df, start_time_str, end_time_str)

@@ -1,3 +1,4 @@
+# 必要なモジュールのインポート
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,7 +7,7 @@ from tkinter import Tk, filedialog
 
 # ファイル選択ダイアログを表示
 root = Tk()
-root.withdraw()  # Tkinterのメインウィンドウを非表示にする
+root.withdraw()
 file_path = filedialog.askopenfilename(title="Select CSV file", filetypes=[("CSV Files", "*.csv")])
 
 # CSVファイルの読み込み
@@ -18,8 +19,8 @@ if file_path:
     print(df.head())
 
     # 標準入力でタイムスタンプ範囲を指定
-    print("\nEnter timestamp ranges (e.g., 163407-163426,163427-163434).")
-    user_input = input("Timestamp ranges: ").strip()
+    print("\n指定するタイムスタンプ範囲を入力してください (例: 163407-163426,163427-163434).")
+    user_input = input("タイムスタンプ範囲: ").strip()
 
     if user_input:
         try:
@@ -28,12 +29,12 @@ if file_path:
                 for pair in user_input.split(',')
             ]
         except ValueError:
-            print("Error: Invalid input format for timestamp ranges.")
-            print("Please use the format: start1-end1,start2-end2,...")
+            print("エラー: 無効なフォーマットです.")
+            print("次のフォーマットで入力してください: hhmmss-hhmmss,hhmmss-hhmmmss,...")
             exit(1)
     else:
-        print("Error: Invalid input format for timestamp ranges.")
-        print("Please use the format: start1-end1,start2-end2,...")
+        print("エラー: 無効なフォーマットです.")
+        print("次のフォーマットで入力してください: hhmmss-hhmmss,hhmmss-hhmmmss,...")
         exit(1)
 
     # フィルタリングしたデータを格納するためのデータフレーム
@@ -64,7 +65,6 @@ if file_path:
 
     plt.xlabel('X Coordinate')
     plt.ylabel('Y Coordinate')
-    #plt.title('Gaze Heatmap (Multiple Timestamp Ranges)')
     plt.show()
 else:
     print("No file selected.")

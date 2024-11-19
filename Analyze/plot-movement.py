@@ -63,9 +63,9 @@ def main():
         # CSVファイルを読み込む
         df = pd.read_csv(file_path, names=["timestamp", "x", "y"], header=None)
 
-        # 標準入力で時間範囲を取得
-        start_time = input("開始時間をHHMMSS形式で入力してください: ")
-        end_time = input("終了時間をHHMMSS形式で入力してください: ")
+        # 標準入力でタイムスタンプ範囲を指定
+        start_time = input("開始時間を入力してください (hhmmss形式): ")
+        end_time = input("終了時間を入力してください (hhmmss形式): ")
 
         # データを時間範囲でフィルタリング
         df_filtered = filter_data_by_timestamp(df, start_time, end_time)
