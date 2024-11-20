@@ -61,6 +61,11 @@ data['Cluster'] = clusters
 # クラスタごとに平均値と分散を計算
 cluster_summary = data.groupby('Cluster').agg({col: ['mean', 'var'] for col in numerical_data.columns})
 
+# 全ての内容を表示するために表示オプションを変更
+pd.set_option('display.max_columns', None)  # 全ての列を表示
+pd.set_option('display.width', None)  # 横幅に制限をかけない
+pd.set_option('display.max_rows', None)  # 行数に制限をかけない
+
 print("\n各クラスタの平均値と分散:")
 print(cluster_summary)
 
