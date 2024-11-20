@@ -39,13 +39,6 @@ def calculate_fixation_duration(df):
     fixation_duration = fixation_df.groupby('classification').size()  # 注視時間（ms）
     return fixation_duration.sum()
 
-# 平均注視位置（x, y）の計算
-def calculate_avg_fixation_location(df):
-    fixation_df = df[df['classification'] == 'fixation']
-    avg_x = fixation_df['x'].mean()
-    avg_y = fixation_df['y'].mean()
-    return avg_x, avg_y
-
 # 平均サッケード振幅（Average Saccade Amplitude）の計算
 def calculate_avg_saccade_amplitude(df):
     saccade_df = df[df['classification'] == 'saccade']
@@ -121,7 +114,6 @@ def main():
 
     # 特徴量の計算
     fixation_duration = calculate_fixation_duration(df_filtered)
-    avg_fixation_location = calculate_avg_fixation_location(df_filtered)
     avg_saccade_amplitude = calculate_avg_saccade_amplitude(df_filtered)
     max_saccade_amplitude = calculate_max_saccade_amplitude(df_filtered)
     saccade_count = calculate_saccade_count(df_filtered)
@@ -133,7 +125,6 @@ def main():
 
     # 結果を表示
     print("Fixation Duration (ms):", fixation_duration)
-    print("Average Fixation Location (x, y):", avg_fixation_location)
     print("Average Saccade Amplitude (px):", avg_saccade_amplitude)
     print("Max Saccade Amplitude (px):", max_saccade_amplitude)
     print("Saccade Count:", saccade_count)
