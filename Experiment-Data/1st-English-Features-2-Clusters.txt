@@ -1,0 +1,51 @@
+データ構造:
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 26 entries, 0 to 25
+Data columns (total 12 columns):
+ #   Column         Non-Null Count  Dtype
+---  ------         --------------  -----
+ 0   被験者            26 non-null     object
+ 1   注視時間(ms)       26 non-null     int64
+ 2   平均注視x座標        26 non-null     int64
+ 3   平均注視y座標        26 non-null     int64
+ 4   平均サッケード振幅(px)  26 non-null     float64
+ 5   最大サッケード振幅(px)  26 non-null     float64
+ 6   サッケード数         26 non-null     int64
+ 7   平均速度           26 non-null     float64
+ 8   速度の標準偏差        26 non-null     float64
+ 9   視覚的探索距離(px)    26 non-null     float64
+ 10  視覚的探索の均一性      26 non-null     float64
+ 11  平均視線回転(rad)    26 non-null     float64
+dtypes: float64(7), int64(4), object(1)
+memory usage: 2.6+ KB
+None
+
+欠損値:
+被験者              0
+注視時間(ms)         0
+平均注視x座標          0
+平均注視y座標          0
+平均サッケード振幅(px)    0
+最大サッケード振幅(px)    0
+サッケード数           0
+平均速度             0
+速度の標準偏差          0
+視覚的探索距離(px)      0
+視覚的探索の均一性        0
+平均視線回転(rad)      0
+dtype: int64
+
+各クラスタの平均値と分散:
+        注視時間(ms)                平均注視x座標                 平均注視y座標               平均サッケード振幅(px)               ...      速度の標準偏差                   視覚的探索距離(px)                 視覚的探索の均一性               平均視線回転(rad)
+            mean           var     mean           var      mean           var          mean          var  ...         mean            var           mean           var        mean           var        mean       var
+Cluster                                                                                                   ...
+1         3965.9  1.252931e+06  851.800   3703.955556  508.2000   5359.288889    270.649078  1909.349061  ...  2009.786785  113430.540313  239607.330850  5.305183e+09  504.957266  14337.141595   -0.067067  0.008851
+2         5542.5  2.180026e+06  870.375  10508.650000  455.5625  10126.929167    165.129463  1190.295079  ...  1319.671569   63549.171466  217575.526313  3.311904e+09  338.343137   6989.797884    0.040367  0.024765
+
+[2 rows x 22 columns]
+
+クラスタ分布:
+Cluster
+2    16
+1    10
+Name: count, dtype: int64
