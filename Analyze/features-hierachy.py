@@ -61,6 +61,11 @@ data['Cluster'] = clusters
 # クラスタごとに平均値と分散を計算
 cluster_summary = data.groupby('Cluster').agg({col: ['mean', 'var'] for col in numerical_data.columns})
 
+# 7. 各被験者IDとそのクラスタを表示
+data['Subject ID'] = subject_ids  # 被験者IDを元のデータに追加
+print("\n各被験者のクラスタ情報:")
+print(data[['Subject ID', 'Cluster']])
+
 # 全ての内容を表示するために表示オプションを変更
 pd.set_option('display.max_columns', None)  # 全ての列を表示
 pd.set_option('display.width', None)  # 横幅に制限をかけない
