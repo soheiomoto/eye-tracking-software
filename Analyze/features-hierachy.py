@@ -83,6 +83,15 @@ print(cluster_distribution)
 pca = PCA(n_components=2)
 reduced_data = pca.fit_transform(scaled_data)
 
+# PCA成分の確認
+pca_components = pd.DataFrame(
+    pca.components_,
+    columns=numerical_data.columns,
+    index=[f"PCA Component {i+1}" for i in range(pca.n_components_)]
+)
+print("\nPCA成分（主成分負荷量）:")
+print(pca_components)
+
 plt.figure(figsize=(8, 6))
 for cluster in range(1, num_clusters + 1):
     cluster_points = reduced_data[clusters == cluster]
