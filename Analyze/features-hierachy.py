@@ -51,12 +51,12 @@ linkage_matrix = linkage(scaled_data, method='ward')
 # 4. デンドログラムの作成
 plt.figure(figsize=(10, 7))
 dendrogram(linkage_matrix, labels=subject_ids.values, leaf_rotation=90, leaf_font_size=10)
-plt.xlabel("Subjects")
-plt.ylabel("Distance")
+plt.xlabel("Participants", fontsize=13)
+plt.ylabel("Distance", fontsize=13)
 plt.show()
 
 # 5. クラスタ数4でクラスタ割り当て
-num_clusters = 3
+num_clusters = 4
 clusters = fcluster(linkage_matrix, num_clusters, criterion='maxclust')
 data['Cluster'] = clusters
 
@@ -116,7 +116,7 @@ for cluster in range(1, num_clusters + 1):
     )
 
 # グラフの装飾
-plt.xlabel("Efficient Concentrated Action")
-plt.ylabel("Visual Exploratory Behavior")
+plt.xlabel("Efficient Concentrated Behaviour", fontsize=13)
+plt.ylabel("Visual Exploratory Behaviour", fontsize=13)
 plt.legend(fontsize=10)
 plt.show()
