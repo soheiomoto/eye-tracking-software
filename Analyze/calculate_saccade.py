@@ -16,8 +16,8 @@ def select_file():
 # 視線速度計算関数
 def calculate_velocity(data, sampling_rate=20):
     delta_t = 1 / sampling_rate  # サンプリング間隔（秒）
-    dx = np.diff(data['x'])
-    dy = np.diff(data['y'])
+    dx = np.diff(data['X Coordinate'])
+    dy = np.diff(data['Y Coordinate'])
     velocity = np.sqrt(dx**2 + dy**2) / delta_t
     return np.concatenate(([0], velocity))  # 最初の速度は0で埋める
 
@@ -49,10 +49,10 @@ def main():
 
     # CSV読み込み
     data = pd.read_csv(file_path)
-    data.columns = ['timestamp', 'x', 'y']
+    data.columns = ['Record Time', 'Gaze Lost', 'X Coordinate', 'Y Coordinate']
 
     # 外れ値 (0, 0) を除外
-    data = data[(data['x'] != 0) & (data['y'] != 0)]
+    data = data[(data['X Coordinate'] != 0) & (data['Y Coordinate'] != 0)]
 
     # 視線速度の計算
     data['velocity'] = calculate_velocity(data)
