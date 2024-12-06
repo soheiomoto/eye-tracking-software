@@ -1,3 +1,13 @@
+'''
+This module is for 1st term experiment data
+
+  Dependencies:
+  - numpy                     2.1.2
+  - pandas                    2.2.3
+  - matplotlib                3.9.2
+  - scipy                     1.14.1
+'''
+
 # 必要なモジュールのインポート
 import pandas as pd
 import numpy as np
@@ -63,11 +73,12 @@ def main():
     data['classification'] = classifications
 
     # 結果を保存
-    output_file = file_path.replace(".csv", "-classified.csv")
+    output_file = file_path.replace(".csv", "-Classified.csv")
     data.to_csv(output_file, index=False)
     print(f"処理結果を保存しました: {output_file}")
 
     # 可視化
+    '''
     plt.figure(figsize=(10, 6))
     plt.plot(data['velocity'], label="Velocity")
     plt.plot(data['threshold'], label="Dynamic Threshold", linestyle="--")
@@ -75,6 +86,7 @@ def main():
     plt.xlabel("Time")
     plt.ylabel("Velocity")
     plt.show()
+    '''
 
 if __name__ == "__main__":
     main()
