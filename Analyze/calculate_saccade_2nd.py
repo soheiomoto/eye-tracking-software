@@ -96,14 +96,5 @@ def main():
     data.to_csv(output_file, index=False)
     print(f"処理結果を保存しました: {output_file}")
 
-    # 可視化
-    plt.figure(figsize=(10, 6))
-    plt.plot(data['velocity'], label="Velocity")
-    plt.plot(data['threshold'], label="Dynamic Threshold", linestyle="--")
-    plt.legend()
-    plt.xlabel("Time")
-    plt.ylabel("Velocity")
-    plt.show()
-
 if __name__ == "__main__":
     main()
