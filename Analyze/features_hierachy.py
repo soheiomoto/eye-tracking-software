@@ -55,8 +55,10 @@ linkage_matrix = linkage(scaled_data, method='ward')
 # 5. デンドログラムの作成
 plt.figure(figsize=(10, 7))
 dendrogram(linkage_matrix, labels=subject_ids.values, leaf_rotation=90, leaf_font_size=10)
+# plt.axhline(y=5, color='r', linestyle='--', label='Cutoff Distance: 5')  # カットオフラインを追加
 plt.xlabel("Participants", fontsize=15)
 plt.ylabel("Distance", fontsize=15)
+# plt.legend(fontsize=12)  # 凡例を追加
 plt.show()
 
 # 6. クラスタ数4でクラスタ割り当て
@@ -91,7 +93,9 @@ cluster_colors = {
     2: '#ff7f0e',  # オレンジ
     3: '#2ca02c',  # 緑
     4: '#d62728',  # 赤
-    5: '#bd81dc'   # 紫
+    5: '#bd81dc',  # 紫
+    6: '#deb887',  # 茶色
+    7: '#f0e68c'   # 黄色
 }
 
 # 重心の色を指定
@@ -100,7 +104,9 @@ centroid_colors = {
     2: '#e56c00',  # 濃いオレンジ
     3: '#006400',  # 濃い緑
     4: '#b20304',  # 濃い赤
-    5: '#a157c8'   # 濃い紫
+    5: '#a157c8',  # 濃い紫
+    6: '#8b4513',  # 濃い茶色
+    7: '#ffd700'   # 濃い黄色
 }
 
 # プロット
