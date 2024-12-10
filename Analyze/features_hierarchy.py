@@ -52,19 +52,29 @@ pca_result = pca.fit_transform(scaled_data)  # データをPCAで変換
 # 4. 距離行列の作成とクラスタリング (ウォード法)
 linkage_matrix = linkage(scaled_data, method='ward')
 
-# 5. デンドログラムの作成
+# 5. クラスタリング結果に基づいてラベルを調整
+valid_subject_ids = subject_ids[valid_data.index]  # 欠損値を削除した後のsubject_ids
+if len(linkage_matrix) != len(valid_subject_ids) - 1:
+    print("警告: クラスタ数とラベルの数が一致しません。")
+
+# 6. デンドログラムの作成
 plt.figure(figsize=(10, 7))
-dendrogram(linkage_matrix, labels=subject_ids.values, leaf_rotation=90, leaf_font_size=10)
+dendrogram(linkage_matrix, labels=valid_subject_ids.values, leaf_rotation=90, leaf_font_size=10)
 #plt.axhline(y=5, color='r', linestyle='--', label='Cutoff Distance: 5')  # カットオフラインを追加
+#plt.legend(fontsize=12)  # 凡例を追加
 plt.xlabel("Participants", fontsize=15)
 plt.ylabel("Distance", fontsize=15)
-#plt.legend(fontsize=12)  # 凡例を追加
 plt.show()
 
 # 6. クラスタ数4でクラスタ割り当て
 num_clusters = int(input("クラスタ数を入力してください（デフォルト: 4）: ") or 4)
+# クラスタリング結果を取得
 clusters = fcluster(linkage_matrix, num_clusters, criterion='maxclust')
-data['Cluster'] = clusters
+
+# 元のデータに統合
+# 有効なデータに基づくインデックスにのみクラスタ情報を割り当て
+data['Cluster'] = np.nan  # 初期値としてNaNを設定
+data.loc[valid_data.index, 'Cluster'] = clusters  # クラスタを有効データのインデックスに割り当て
 
 # 7. 数値列のみに対してクラスタごとの特徴抽出
 # クラスタごとに平均値と分散を計算
