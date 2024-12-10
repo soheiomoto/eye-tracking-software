@@ -4,7 +4,6 @@ import numpy as np
 import tkinter as tk
 from tkinter import filedialog
 from scipy.spatial.distance import euclidean
-from math import radians
 
 # CSVファイル選択ダイアログ
 def load_csv():
@@ -12,26 +11,6 @@ def load_csv():
     root.withdraw()
     file_path = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv")])
     return file_path
-
-# hhmmss形式のタイムスタンプを秒に変換
-def convert_to_seconds(timestamp):
-    # タイムスタンプが整数型の場合は文字列に変換
-    timestamp = str(timestamp)
-    h = int(timestamp[:2])
-    m = int(timestamp[2:4])
-    s = int(timestamp[4:])
-    return h * 3600 + m * 60 + s
-
-# 時間範囲をhhmmss形式で指定し、データをフィルタリング
-def filter_data(df, start_time_str, end_time_str):
-    # 時間範囲を秒に変換
-    start_time = convert_to_seconds(start_time_str)
-    end_time = convert_to_seconds(end_time_str)
-    
-    # timestampを秒に変換
-    df['time_seconds'] = df['timestamp'].apply(convert_to_seconds)
-    
-    return df[(df['time_seconds'] >= start_time) & (df['time_seconds'] <= end_time)]
 
 # 注視時間（Fixation Duration）の計算
 def calculate_fixation_duration(df):
@@ -105,23 +84,16 @@ def main():
     # 座標(0,0)は外れ値として扱う
     df = df[(df['x'] != 0) & (df['y'] != 0)]
 
-    # ユーザーにhhmmss形式で時間範囲を指定
-    start_time_str = input("開始時間を入力してください (hhmmss形式): ")
-    end_time_str = input("終了時間を入力してください (hhmmss形式): ")
-
-    # 時間範囲でフィルタリング
-    df_filtered = filter_data(df, start_time_str, end_time_str)
-
     # 特徴量の計算
-    fixation_duration = calculate_fixation_duration(df_filtered)
-    avg_saccade_amplitude = calculate_avg_saccade_amplitude(df_filtered)
-    max_saccade_amplitude = calculate_max_saccade_amplitude(df_filtered)
-    saccade_count = calculate_saccade_count(df_filtered)
-    avg_velocity = calculate_avg_velocity(df_filtered)
-    velocity_std_dev = calculate_velocity_std_dev(df_filtered)
-    search_distance = calculate_search_distance(df_filtered)
-    search_uniformity = calculate_search_uniformity(df_filtered)
-    avg_gaze_rotation = calculate_avg_gaze_rotation(df_filtered)
+    fixation_duration = calculate_fixation_duration(df)
+    avg_saccade_amplitude = calculate_avg_saccade_amplitude(df)
+    max_saccade_amplitude = calculate_max_saccade_amplitude(df)
+    saccade_count = calculate_saccade_count(df)
+    avg_velocity = calculate_avg_velocity(df)
+    velocity_std_dev = calculate_velocity_std_dev(df)
+    search_distance = calculate_search_distance(df)
+    search_uniformity = calculate_search_uniformity(df)
+    avg_gaze_rotation = calculate_avg_gaze_rotation(df)
 
     # 結果を表示
     print("Fixation Duration (ms):", fixation_duration)
