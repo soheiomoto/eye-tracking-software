@@ -40,11 +40,6 @@ def calculate_avg_velocity(df):
     velocities = df['velocity'].values
     return np.mean(velocities)
 
-# 速度の標準偏差（Velocity Std Dev）の計算
-def calculate_velocity_std_dev(df):
-    velocities = df['velocity'].values
-    return np.std(velocities)
-
 # 視覚的探索距離（Search Distance）の計算
 def calculate_search_distance(df):
     fixation_df = df[df['classification'] == 'fixation']
@@ -100,7 +95,6 @@ def main():
     max_saccade_amplitude = calculate_max_saccade_amplitude(df)
     saccade_count = calculate_saccade_count(df)
     avg_velocity = calculate_avg_velocity(df)
-    velocity_std_dev = calculate_velocity_std_dev(df)
     search_distance = calculate_search_distance(df)
     search_uniformity = calculate_search_uniformity(df)
     avg_gaze_rotation = calculate_avg_gaze_rotation(df)
@@ -111,7 +105,6 @@ def main():
     print(max_saccade_amplitude)
     print(saccade_count)
     print(avg_velocity)
-    print(velocity_std_dev)
     print(search_distance)
     print(search_uniformity)
     print(avg_gaze_rotation)
