@@ -1,0 +1,131 @@
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+from tkinter import Tk
+from tkinter.filedialog import askopenfilename
+
+# ファイル選択ダイアログを表示
+def select_file():
+    Tk().withdraw()  # Tkinterのデフォルトウィンドウを非表示
+    file_path = askopenfilename(
+        title="CSVファイルを選択してください",
+        filetypes=[("CSV Files", "*.csv"), ("All Files", "*.*")]
+    )
+    return file_path
+
+# ファイル選択
+file_path = select_file()
+if not file_path:
+    print("ファイルが選択されませんでした。プログラムを終了します。")
+    exit()
+
+# 1. CSVファイルの読み込みとデータ構造の確認
+data = pd.read_csv(file_path)
+
+# データ構造の確認
+print("データ構造:")
+print(data.info())
+print("\n欠損値:")
+print(data.isnull().sum())
+
+# 被験者IDを分離して、数値データを取得
+subject_ids = data.iloc[:, 0]  # 最初の列が被験者IDと仮定
+numerical_data = data.iloc[:, 1:]  # 残りの列が数値データ
+
+# 数値列のみを抽出
+numerical_data = numerical_data.apply(pd.to_numeric, errors='coerce')  # 数値に変換できないものはNaNにする
+
+# NaNを含む行を削除
+valid_data = numerical_data.dropna()
+
+# 2. スケールの標準化
+scaler = StandardScaler()
+scaled_data = scaler.fit_transform(valid_data)
+
+# 3. PCAで次元削減 (自動で重みを設定)
+pca = PCA(n_components=2)  # 2次元に削減
+pca_result = pca.fit_transform(scaled_data)  # データをPCAで変換
+
+# 4. 距離行列の作成とクラスタリング (ウォード法)
+linkage_matrix = linkage(scaled_data, method='ward')
+
+# 5. デンドログラムの作成
+plt.figure(figsize=(10, 7))
+dendrogram(linkage_matrix, labels=subject_ids.values, leaf_rotation=90, leaf_font_size=10)
+plt.xlabel("Participants", fontsize=15)
+plt.ylabel("Distance", fontsize=15)
+plt.show()
+
+# 6. クラスタ数4でクラスタ割り当て
+num_clusters = 4
+clusters = fcluster(linkage_matrix, num_clusters, criterion='maxclust')
+data['Cluster'] = clusters
+
+# 7. 数値列のみに対してクラスタごとの特徴抽出
+# クラスタごとに平均値と分散を計算
+cluster_summary = data.groupby('Cluster').agg({col: ['mean', 'var'] for col in valid_data.columns})
+
+print("\n各クラスタの平均値と分散:")
+print(cluster_summary)
+
+# クラスタの分布
+cluster_distribution = data['Cluster'].value_counts()
+print("\nクラスタ分布:")
+print(cluster_distribution)
+
+# 8. 特徴量に対する重み（主成分の係数）を表示
+print("\nPCAによる各特徴量の重み（主成分の係数）:")
+feature_names = valid_data.columns  # 特徴量の名前
+pca_components = pca.components_  # 主成分の係数
+
+# 主成分に対する特徴量の重みをDataFrameに表示
+pca_weights = pd.DataFrame(pca_components.T, columns=[f"PC{i+1}" for i in range(pca.n_components_)], index=feature_names)
+print(pca_weights)
+
+# クラスタ別の色を指定
+cluster_colors = {
+    1: '#1f77b4',  # 青
+    2: '#ff7f0e',  # オレンジ
+    3: '#2ca02c',  # 緑
+    4: '#d62728',  # 赤
+    5: '#bd81dc'   # 紫
+}
+
+# 重心の色を指定
+centroid_colors = {
+    1: '#1f77b4',  # 濃い青
+    2: '#e56c00',  # 濃いオレンジ
+    3: '#006400',  # 濃い緑
+    4: '#b20304',  # 濃い赤
+    5: '#a157c8'   # 濃い紫
+}
+
+# プロット
+plt.figure(figsize=(10, 8))
+for cluster in range(1, num_clusters + 1):
+    cluster_points = pca_result[clusters == cluster]
+    plt.scatter(
+        cluster_points[:, 0], cluster_points[:, 1],
+        label=f"Cluster {cluster}",
+        color=cluster_colors[cluster],  # クラスタデータの色
+        alpha=0.6, s=50
+    )
+
+# 重心を計算してプロット
+for cluster in range(1, num_clusters + 1):
+    cluster_data = pca_result[clusters == cluster]
+    centroid = cluster_data.mean(axis=0)
+    plt.scatter(
+        centroid[0], centroid[1],
+        marker='v', color=centroid_colors[cluster],  # 重心の色
+        s=200, label=f"Centroid {cluster}"
+    )
+
+# グラフの装飾
+plt.xlabel("Efficient Uniformity Behaviour", fontsize=15)
+plt.ylabel("Extensive Search Behaviour", fontsize=15)
+plt.legend(fontsize=10)
+plt.show()
