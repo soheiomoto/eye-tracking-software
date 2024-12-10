@@ -96,15 +96,15 @@ def main():
     avg_gaze_rotation = calculate_avg_gaze_rotation(df)
 
     # 結果を表示
-    print("Fixation Duration (ms):", fixation_duration)
-    print("Average Saccade Amplitude (px):", avg_saccade_amplitude)
-    print("Max Saccade Amplitude (px):", max_saccade_amplitude)
-    print("Saccade Count:", saccade_count)
-    print("Average Velocity:", avg_velocity)
-    print("Velocity Std Dev:", velocity_std_dev)
-    print("Search Distance (px):", search_distance)
-    print("Search Uniformity:", search_uniformity)
-    print("Average Gaze Rotation (rad):", avg_gaze_rotation)
+    print(fixation_duration)
+    print(avg_saccade_amplitude)
+    print(max_saccade_amplitude)
+    print(saccade_count)
+    print(avg_velocity)
+    print(velocity_std_dev)
+    print(search_distance)
+    print(search_uniformity)
+    print(avg_gaze_rotation)
 
 # 実行
 if __name__ == "__main__":
