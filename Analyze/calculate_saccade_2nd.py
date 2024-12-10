@@ -38,7 +38,7 @@ def convert_timestamp_to_seconds(timestamp):
         return np.nan  # 変換に失敗した場合は NaN を返す
 
 # 視線速度計算関数
-def calculate_velocity(data, sampling_rate=20):
+def calculate_velocity(data, sampling_rate=60):
     delta_t = 1 / sampling_rate  # サンプリング間隔（秒）
     dx = np.diff(data['X Coordinate'])
     dy = np.diff(data['Y Coordinate'])
