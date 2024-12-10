@@ -60,7 +60,7 @@ plt.ylabel("Distance", fontsize=15)
 plt.show()
 
 # 6. クラスタ数4でクラスタ割り当て
-num_clusters = 4
+num_clusters = int(input("クラスタ数を入力してください（デフォルト: 4）: ") or 4)
 clusters = fcluster(linkage_matrix, num_clusters, criterion='maxclust')
 data['Cluster'] = clusters
 
@@ -125,7 +125,7 @@ for cluster in range(1, num_clusters + 1):
     )
 
 # グラフの装飾
-plt.xlabel("Efficient Uniformity Behaviour", fontsize=15)
-plt.ylabel("Extensive Search Behaviour", fontsize=15)
+plt.xlabel("PCA Component 1", fontsize=15)
+plt.ylabel("PCA Component 2", fontsize=15)
 plt.legend(fontsize=10)
 plt.show()
