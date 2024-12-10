@@ -76,14 +76,14 @@ cluster_distribution = data['Cluster'].value_counts()
 print("\nクラスタ分布:")
 print(cluster_distribution)
 
-# 8. 特徴量に対する重み（主成分の係数）を表示
-print("\nPCAによる各特徴量の重み（主成分の係数）:")
-feature_names = valid_data.columns  # 特徴量の名前
-pca_components = pca.components_  # 主成分の係数
-
-# 主成分に対する特徴量の重みをDataFrameに表示
-pca_weights = pd.DataFrame(pca_components.T, columns=[f"PC{i+1}" for i in range(pca.n_components_)], index=feature_names)
-print(pca_weights)
+# PCA成分の確認
+pca_components = pd.DataFrame(
+    pca.components_,
+    columns=numerical_data.columns,
+    index=[f"PCA Component {i+1}" for i in range(pca.n_components_)]
+)
+print("\nPCA成分（主成分負荷量）:")
+print(pca_components)
 
 # クラスタ別の色を指定
 cluster_colors = {
