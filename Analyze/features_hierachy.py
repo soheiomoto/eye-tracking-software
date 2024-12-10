@@ -55,10 +55,10 @@ linkage_matrix = linkage(scaled_data, method='ward')
 # 5. デンドログラムの作成
 plt.figure(figsize=(10, 7))
 dendrogram(linkage_matrix, labels=subject_ids.values, leaf_rotation=90, leaf_font_size=10)
-# plt.axhline(y=5, color='r', linestyle='--', label='Cutoff Distance: 5')  # カットオフラインを追加
+#plt.axhline(y=5, color='r', linestyle='--', label='Cutoff Distance: 5')  # カットオフラインを追加
 plt.xlabel("Participants", fontsize=15)
 plt.ylabel("Distance", fontsize=15)
-# plt.legend(fontsize=12)  # 凡例を追加
+#plt.legend(fontsize=12)  # 凡例を追加
 plt.show()
 
 # 6. クラスタ数4でクラスタ割り当て
