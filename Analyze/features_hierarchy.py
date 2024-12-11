@@ -26,8 +26,8 @@ if not file_path:
 data = pd.read_csv(file_path)
 
 # データ構造の確認
-print("データ構造:")
-print(data.info())
+#print("データ構造:")
+#print(data.info())
 print("\n欠損値:")
 print(data.isnull().sum())
 
@@ -80,6 +80,11 @@ data.loc[valid_data.index, 'Cluster'] = clusters  # クラスタを有効デー�
 # クラスタごとに平均値と分散を計算
 cluster_summary = data.groupby('Cluster').agg({col: ['mean', 'var'] for col in valid_data.columns})
 
+# Pandasの表示設定を変更して、全ての行と列を表示するようにする
+pd.set_option('display.max_rows', None)  # 行数の上限を設定しない
+pd.set_option('display.max_columns', None)  # 列数の上限を設定しない
+pd.set_option('display.width', None)  # 行ごとの表示幅の制限を解除
+pd.set_option('display.max_colwidth', None)  # 列の最大幅を制限しない
 print("\n各クラスタの平均値と分散:")
 print(cluster_summary)
 
