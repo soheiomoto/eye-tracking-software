@@ -12,60 +12,86 @@ def load_csv():
     file_path = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv")])
     return file_path
 
-# 注視時間（Fixation Duration）の計算
-def calculate_fixation_duration(df):
-    fixation_df = df[df['classification'] == 'fixation']
-    fixation_duration = fixation_df.groupby('classification').size()  # 注視時間（ms）
-    return fixation_duration.sum()
+# データの時間範囲（Time Range）の計算
+def calculate_time_range(df):
+    # timestampがhhmmss形式であれば、時間フォーマットを指定して解析する
+    timestamps = pd.to_datetime(df['timestamp'], format='%H%M%S', errors='coerce')
+    return (timestamps.max() - timestamps.min()).total_seconds()
+
+# サッケードカウントの割合（Saccade Count Ratio）の計算
+def calculate_saccade_count_ratio(df):
+    saccade_df = df[df['classification'] == 'saccade']
+    total_count = len(df)
+    saccade_count = len(saccade_df)
+    return saccade_count / total_count * 100 if total_count > 0 else 0
 
 # 平均サッケード振幅（Average Saccade Amplitude）の計算
 def calculate_avg_saccade_amplitude(df):
     saccade_df = df[df['classification'] == 'saccade']
     amplitudes = [euclidean((x1, y1), (x2, y2)) for x1, y1, x2, y2 in zip(saccade_df['x'][:-1], saccade_df['y'][:-1], saccade_df['x'][1:], saccade_df['y'][1:])]
-    return np.mean(amplitudes)
+    return np.mean(amplitudes) if amplitudes else 0
 
 # 最大サッケード振幅（Max Saccade Amplitude）の計算
 def calculate_max_saccade_amplitude(df):
     saccade_df = df[df['classification'] == 'saccade']
     amplitudes = [euclidean((x1, y1), (x2, y2)) for x1, y1, x2, y2 in zip(saccade_df['x'][:-1], saccade_df['y'][:-1], saccade_df['x'][1:], saccade_df['y'][1:])]
-    return np.max(amplitudes)
-
-# サッケードのカウント（Saccade Count）の計算
-def calculate_saccade_count(df):
-    saccade_df = df[df['classification'] == 'saccade']
-    return saccade_df.shape[0]
+    return np.max(amplitudes) if amplitudes else 0
 
 # 平均速度（Average Velocity）の計算
 def calculate_avg_velocity(df):
     velocities = df['velocity'].values
-    return np.mean(velocities)
+    return np.mean(velocities) if len(velocities) > 0 else 0
 
-# 視覚的探索距離（Search Distance）の計算
-def calculate_search_distance(df):
+# 視線の分布（Gaze Dispersion）の計算
+def calculate_gaze_dispersion(df):
     fixation_df = df[df['classification'] == 'fixation']
-    distance = 0
-    for i in range(1, len(fixation_df)):
-        distance += euclidean((fixation_df['x'].iloc[i], fixation_df['y'].iloc[i]), (fixation_df['x'].iloc[i-1], fixation_df['y'].iloc[i-1]))
-    return distance
+    if len(fixation_df) > 0:
+        x_std = np.std(fixation_df['x'])
+        y_std = np.std(fixation_df['y'])
+        return np.sqrt(x_std**2 + y_std**2)
+    return 0
 
-# 視覚的探索の均一性（Search Uniformity）の計算
-def calculate_search_uniformity(df):
-    fixation_df = df[df['classification'] == 'fixation']
-    x_values = fixation_df['x']
-    y_values = fixation_df['y']
-    area = np.ptp(x_values) * np.ptp(y_values)  # 視線が移動した範囲
-    return area / len(fixation_df)
+# 切り替え回数（Transition Count）の計算
+def calculate_transition_count(df):
+    transitions = (df['classification'] != df['classification'].shift()).sum() - 1
+    return transitions if transitions > 0 else 0
 
-# 平均視線回転（Average Gaze Rotation）の計算
-def calculate_avg_gaze_rotation(df):
-    fixation_df = df[df['classification'] == 'fixation']
-    angles = []
-    for i in range(1, len(fixation_df)):
-        dx = fixation_df['x'].iloc[i] - fixation_df['x'].iloc[i-1]
-        dy = fixation_df['y'].iloc[i] - fixation_df['y'].iloc[i-1]
-        angle = np.arctan2(dy, dx)
-        angles.append(angle)
-    return np.mean(angles)
+# 視線パスのフラクタル次元（Fractal Dimension）の計算
+def calculate_fractal_dimension(df):
+    if len(df) < 2:
+        return 0
+    x = df['x'].values
+    y = df['y'].values
+    distances = np.sqrt(np.diff(x)**2 + np.diff(y)**2)
+    total_distance = np.sum(distances)
+    bounding_box = (np.ptp(x), np.ptp(y))
+    bounding_box_diagonal = np.sqrt(bounding_box[0]**2 + bounding_box[1]**2)
+    return total_distance / bounding_box_diagonal if bounding_box_diagonal > 0 else 0
+
+# 平均視線パス直線性（Average Path Linearity）の計算
+def calculate_avg_path_linearity(df):
+    saccade_segments = []
+    start_index = None
+
+    for i in range(1, len(df)):
+        if df['classification'].iloc[i-1] == 'fixation' and df['classification'].iloc[i] == 'saccade':
+            start_index = i
+        elif df['classification'].iloc[i-1] == 'saccade' and df['classification'].iloc[i] == 'fixation' and start_index is not None:
+            saccade_segments.append((start_index, i))
+            start_index = None
+
+    linearities = []
+    for start, end in saccade_segments:
+        segment = df.iloc[start:end+1]
+        if len(segment) < 2:
+            continue
+        start_point = (segment['x'].iloc[0], segment['y'].iloc[0])
+        end_point = (segment['x'].iloc[-1], segment['y'].iloc[-1])
+        direct_distance = euclidean(start_point, end_point)
+        path_distance = np.sum(np.sqrt(np.diff(segment['x'])**2 + np.diff(segment['y'])**2))
+        linearities.append(direct_distance / path_distance if path_distance > 0 else 0)
+
+    return np.mean(linearities) if linearities else 0
 
 # メイン関数
 def main():
@@ -80,24 +106,26 @@ def main():
     df = df[(df['x'] != 0) & (df['y'] != 0)]
 
     # 特徴量の計算
-    fixation_duration = calculate_fixation_duration(df)
+    time_range = calculate_time_range(df)
+    saccade_count_ratio = calculate_saccade_count_ratio(df)
     avg_saccade_amplitude = calculate_avg_saccade_amplitude(df)
     max_saccade_amplitude = calculate_max_saccade_amplitude(df)
-    saccade_count = calculate_saccade_count(df)
     avg_velocity = calculate_avg_velocity(df)
-    search_distance = calculate_search_distance(df)
-    search_uniformity = calculate_search_uniformity(df)
-    avg_gaze_rotation = calculate_avg_gaze_rotation(df)
+    gaze_dispersion = calculate_gaze_dispersion(df)
+    transition_count = calculate_transition_count(df)
+    fractal_dimension = calculate_fractal_dimension(df)
+    avg_path_linearity = calculate_avg_path_linearity(df)
 
     # 結果を表示
-    print(fixation_duration)
+    print(time_range)
+    print(saccade_count_ratio)
     print(avg_saccade_amplitude)
     print(max_saccade_amplitude)
-    print(saccade_count)
     print(avg_velocity)
-    print(search_distance)
-    print(search_uniformity)
-    print(avg_gaze_rotation)
+    print(gaze_dispersion)
+    print(transition_count)
+    print(fractal_dimension)
+    print(avg_path_linearity)
 
 # 実行
 if __name__ == "__main__":
