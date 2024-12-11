@@ -117,15 +117,7 @@ def main():
     avg_path_linearity = calculate_avg_path_linearity(df)
 
     # 結果を表示
-    print(time_range)
-    print(avg_velocity)
-    print(transition_count)
-    print(saccade_count_ratio)
-    print(avg_saccade_amplitude)
-    print(max_saccade_amplitude)
-    print(gaze_dispersion)
-    print(fractal_dimension)
-    print(avg_path_linearity)
+    print(time_range,avg_velocity,transition_count,saccade_count_ratio,avg_saccade_amplitude,max_saccade_amplitude,gaze_dispersion,fractal_dimension,avg_path_linearity,sep=',')
 
 # 実行
 if __name__ == "__main__":
