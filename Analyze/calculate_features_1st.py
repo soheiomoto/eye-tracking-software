@@ -14,7 +14,6 @@ def load_csv():
 
 # データの時間範囲（Time Range）の計算
 def calculate_time_range(df):
-    # timestampがhhmmss形式であれば、時間フォーマットを指定して解析する
     timestamps = pd.to_datetime(df['timestamp'], format='%H%M%S', errors='coerce')
     return (timestamps.max() - timestamps.min()).total_seconds()
 
