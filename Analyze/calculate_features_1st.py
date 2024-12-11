@@ -18,6 +18,16 @@ def calculate_time_range(df):
     timestamps = pd.to_datetime(df['timestamp'], format='%H%M%S', errors='coerce')
     return (timestamps.max() - timestamps.min()).total_seconds()
 
+# 平均速度（Average Velocity）の計算
+def calculate_avg_velocity(df):
+    velocities = df['velocity'].values
+    return np.mean(velocities) if len(velocities) > 0 else 0
+
+# 切り替え回数（Transition Count）の計算
+def calculate_transition_count(df):
+    transitions = (df['classification'] != df['classification'].shift()).sum() - 1
+    return transitions if transitions > 0 else 0
+
 # サッケードカウントの割合（Saccade Count Ratio）の計算
 def calculate_saccade_count_ratio(df):
     saccade_df = df[df['classification'] == 'saccade']
@@ -37,11 +47,6 @@ def calculate_max_saccade_amplitude(df):
     amplitudes = [euclidean((x1, y1), (x2, y2)) for x1, y1, x2, y2 in zip(saccade_df['x'][:-1], saccade_df['y'][:-1], saccade_df['x'][1:], saccade_df['y'][1:])]
     return np.max(amplitudes) if amplitudes else 0
 
-# 平均速度（Average Velocity）の計算
-def calculate_avg_velocity(df):
-    velocities = df['velocity'].values
-    return np.mean(velocities) if len(velocities) > 0 else 0
-
 # 視線の分布（Gaze Dispersion）の計算
 def calculate_gaze_dispersion(df):
     fixation_df = df[df['classification'] == 'fixation']
@@ -50,11 +55,6 @@ def calculate_gaze_dispersion(df):
         y_std = np.std(fixation_df['y'])
         return np.sqrt(x_std**2 + y_std**2)
     return 0
-
-# 切り替え回数（Transition Count）の計算
-def calculate_transition_count(df):
-    transitions = (df['classification'] != df['classification'].shift()).sum() - 1
-    return transitions if transitions > 0 else 0
 
 # 視線パスのフラクタル次元（Fractal Dimension）の計算
 def calculate_fractal_dimension(df):
@@ -107,23 +107,23 @@ def main():
 
     # 特徴量の計算
     time_range = calculate_time_range(df)
+    avg_velocity = calculate_avg_velocity(df)
+    transition_count = calculate_transition_count(df)
     saccade_count_ratio = calculate_saccade_count_ratio(df)
     avg_saccade_amplitude = calculate_avg_saccade_amplitude(df)
     max_saccade_amplitude = calculate_max_saccade_amplitude(df)
-    avg_velocity = calculate_avg_velocity(df)
     gaze_dispersion = calculate_gaze_dispersion(df)
-    transition_count = calculate_transition_count(df)
     fractal_dimension = calculate_fractal_dimension(df)
     avg_path_linearity = calculate_avg_path_linearity(df)
 
     # 結果を表示
     print(time_range)
+    print(avg_velocity)
+    print(transition_count)
     print(saccade_count_ratio)
     print(avg_saccade_amplitude)
     print(max_saccade_amplitude)
-    print(avg_velocity)
     print(gaze_dispersion)
-    print(transition_count)
     print(fractal_dimension)
     print(avg_path_linearity)
 
