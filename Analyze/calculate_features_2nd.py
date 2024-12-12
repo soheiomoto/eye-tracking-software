@@ -13,7 +13,8 @@ def load_csv():
 
 # データの時間範囲（Time Range）の計算
 def calculate_time_range(df):
-    timestamps = pd.to_datetime(df['Record Time'].str[:6], format='%H%M%S', errors='coerce')
+    # timestamps = pd.to_datetime(df['Record Time'].str[:6], format='%H%M%S', errors='coerce')
+    timestamps = pd.to_datetime(df['Record Time'], format='%H%M%S%f', errors='coerce')
     return (timestamps.max() - timestamps.min()).total_seconds()
 
 # 平均速度（Average Velocity）の計算
