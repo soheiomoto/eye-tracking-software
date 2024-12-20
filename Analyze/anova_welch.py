@@ -3,8 +3,11 @@ from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 import numpy as np
 from pingouin import welch_anova, pairwise_gameshowell
-from scipy.stats import kruskal
+from scipy.stats import kruskal, f_oneway
 from scikit_posthocs import posthoc_dunn
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
 
 # ファイル選択ダイアログを表示
 def select_file():
@@ -36,8 +39,10 @@ welch_results = {}
 games_howell_results = {}
 kruskal_results = {}
 dunn_results = {}
+anova_results = {}
+tukey_results = {}
 
-# 各特徴量に対してウェルチANOVAとKruskal-Wallis検定を実行
+# 各特徴量に対してウェルチANOVA、通常のANOVA、Kruskal-Wallis検定を実行
 for feature in features:
     # ウェルチANOVA
     welch_result = welch_anova(dv=feature, between="Group", data=df)
@@ -51,13 +56,33 @@ for feature in features:
     groups_data = [df[df['Group'] == group][feature].dropna() for group in groups]
     kruskal_result = kruskal(*groups_data)
     kruskal_results[feature] = kruskal_result
-        # Dunn検定の修正
-    dunn_results = {}
-    for feature in features:
-        dunn_result = posthoc_dunn(df, val_col=feature, group_col='Group', p_adjust='bonferroni')
-        dunn_results[feature] = dunn_result
+
+    # Dunn検定の修正（多重比較補正を追加）
+    dunn_result = posthoc_dunn(df, val_col=feature, group_col='Group', p_adjust='bonferroni')  # 'bonferroni'を変更可能
+    dunn_results[feature] = dunn_result
+
+    # 通常のANOVA
+    anova_groups_data = [df[df['Group'] == group][feature].dropna() for group in groups]
+    anova_result = f_oneway(*anova_groups_data)
+    anova_results[feature] = anova_result
+
+    # Tukeyの事後検定
+    model = ols(f'{feature} ~ C(Group)', data=df).fit()
+    anova_table = sm.stats.anova_lm(model, typ=2)
+    tukey_result = pairwise_tukeyhsd(df[feature], df['Group'])
+    tukey_results[feature] = tukey_result
 
 # 結果の表示
+print("\n通常のANOVAの結果:")
+for feature, result in anova_results.items():
+    print(f'\n{feature} の通常のANOVA結果:')
+    print(f"F値: {result.statistic}, p値: {result.pvalue}")
+
+print("\nTukeyの事後検定結果:")
+for feature, result in tukey_results.items():
+    print(f'\n{feature} のTukey事後検定結果:')
+    print(result)
+
 print("ウェルチANOVAの結果:")
 for feature, result in welch_results.items():
     print(f'\n{feature} のウェルチANOVA結果:')
