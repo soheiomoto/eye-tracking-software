@@ -26,10 +26,10 @@ if not file_path:
 df = pd.read_csv(file_path)
 
 # グループ列を取得
-groups = df['グループ'].unique()
+groups = df['Group'].unique()
 
 # 特徴量のリスト
-features = ['特徴量1', '特徴量2', '特徴量3', '特徴量4', '特徴量5', '特徴量6', '特徴量7', '特徴量8', '特徴量9']
+features = ['Feature1', 'Feature2', 'Feature3', 'Feature4', 'Feature5', 'Feature6', 'Feature7', 'Feature8', 'Feature9', 'Feature10']
 
 # 正規性の検定: Shapiro-Wilk検定
 def check_normality(data):
@@ -46,7 +46,7 @@ for feature in features:
     print(f'--- {feature} ---')
 
     # グループごとのデータを取得
-    group_data = [df[df['グループ'] == group][feature].dropna() for group in groups]
+    group_data = [df[df['Group'] == group][feature].dropna() for group in groups]
 
     # 正規性の検定（Shapiro-Wilk）
     normality_p_values = [check_normality(group) for group in group_data]

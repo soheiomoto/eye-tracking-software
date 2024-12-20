@@ -24,29 +24,28 @@ if not file_path:
 data = pd.read_csv(file_path)
 
 # グループと特徴量のデータを取り出す
-group = data['グループ']  # グループ列を取り出す
-features = data[['特徴量1', '特徴量2', '特徴量3', '特徴量4', '特徴量5',
-                 '特徴量6', '特徴量7', '特徴量8', '特徴量9']]  # 特徴量列を取り出す
+group = data['Group']  # グループ列を取り出す
+features = data[['Feature1', 'Feature2', 'Feature3', 'Feature4', 'Feature5', 'Feature6', 'Feature7', 'Feature8', 'Feature9', 'Feature10']]  # 特徴量列を取り出す
 
 # MANOVAを実行
-manova = MANOVA.from_formula('特徴量1 + 特徴量2 + 特徴量3 + 特徴量4 + 特徴量5 + '
-                             '特徴量6 + 特徴量7 + 特徴量8 + 特徴量9 ~ グループ', data=data)
+manova = MANOVA.from_formula('Feature1 + Feature2 + Feature3 + Feature4 + Feature5 + '
+                             'Feature6 + Feature7 + Feature8 + Feature9 ~ Group', data=data)
 
 # 結果を表示
 result = manova.mv_test()
 print(result)
 
 # グループのデータと特徴量を用意
-group = data['グループ']  # グループ列
-features = ['特徴量1', '特徴量2', '特徴量3', '特徴量4', '特徴量5',
-            '特徴量6', '特徴量7', '特徴量8', '特徴量9']  # 特徴量列
+group = data['Group']  # グループ列
+features = ['Feature1', 'Feature2', 'Feature3', 'Feature4', 'Feature5',
+            'Feature6', 'Feature7', 'Feature8', 'Feature9']  # 特徴量列
 
 # 各特徴量についてTukey HSDテストを実行
 for feature in features:
     print(f"\n{feature}についてTukeyのHSDテスト:")
     
     # Tukey HSDテストを実行
-    tukey_result = pairwise_tukeyhsd(endog=data[feature], groups=data['グループ'], alpha=0.05)
+    tukey_result = pairwise_tukeyhsd(endog=data[feature], groups=data['Group'], alpha=0.05)
     
     # 結果を表示
     print(tukey_result.summary())
