@@ -29,7 +29,7 @@ features = data[['Feature1', 'Feature2', 'Feature3', 'Feature4', 'Feature5', 'Fe
 
 # MANOVAを実行
 manova = MANOVA.from_formula('Feature1 + Feature2 + Feature3 + Feature4 + Feature5 + '
-                             'Feature6 + Feature7 + Feature8 + Feature9 ~ Group', data=data)
+                             'Feature6 + Feature7 + Feature8 + Feature9 + Feature10 ~ Group', data=data)
 
 # 結果を表示
 result = manova.mv_test()
@@ -38,7 +38,7 @@ print(result)
 # グループのデータと特徴量を用意
 group = data['Group']  # グループ列
 features = ['Feature1', 'Feature2', 'Feature3', 'Feature4', 'Feature5',
-            'Feature6', 'Feature7', 'Feature8', 'Feature9']  # 特徴量列
+            'Feature6', 'Feature7', 'Feature8', 'Feature9', 'Feature10']  # 特徴量列
 
 # 各特徴量についてTukey HSDテストを実行
 for feature in features:
