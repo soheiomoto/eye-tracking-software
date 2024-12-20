@@ -4,23 +4,33 @@
 -----------------------------------------------------------------
        Intercept          Value   Num DF  Den DF  F Value  Pr > F
 -----------------------------------------------------------------
-          Wilks' lambda    0.0005 9.0000 11.0000 2255.6194 0.0000
-         Pillai's trace    0.9995 9.0000 11.0000 2255.6194 0.0000
- Hotelling-Lawley trace 1845.5068 9.0000 11.0000 2255.6194 0.0000
-    Roy's greatest root 1845.5068 9.0000 11.0000 2255.6194 0.0000
+          Wilks' lambda    0.0006 9.0000 11.0000 2108.0622 0.0000
+         Pillai's trace    0.9994 9.0000 11.0000 2108.0622 0.0000
+ Hotelling-Lawley trace 1724.7782 9.0000 11.0000 2108.0622 0.0000
+    Roy's greatest root 1724.7782 9.0000 11.0000 2108.0622 0.0000
 -----------------------------------------------------------------
 
 -----------------------------------------------------------------
-              グループ          Value   Num DF  Den DF F Value Pr > F
+             Group          Value   Num DF  Den DF F Value Pr > F
 -----------------------------------------------------------------
-              Wilks' lambda 0.1569 18.0000 22.0000  1.8634 0.0829
-             Pillai's trace 1.1535 18.0000 24.0000  1.8169 0.0856
-     Hotelling-Lawley trace 3.3951 18.0000 14.9375  1.9600 0.0971
-        Roy's greatest root 2.6481  9.0000 12.0000  3.5308 0.0227
+              Wilks' lambda 0.0926 18.0000 22.0000  2.7937 0.0118
+             Pillai's trace 1.2751 18.0000 24.0000  2.3452 0.0261
+     Hotelling-Lawley trace 5.8263 18.0000 14.9375  3.3635 0.0110
+        Roy's greatest root 5.0385  9.0000 12.0000  6.7179 0.0016
 =================================================================
 
 
-特徴量1についてTukeyのHSDテスト:
+Feature1についてTukeyのHSDテスト:
+ Multiple Comparison of Means - Tukey HSD, FWER=0.05 
+=====================================================
+group1 group2 meandiff p-adj   lower    upper  reject
+-----------------------------------------------------
+     A      B -18.5714 0.0312 -35.6015 -1.5414   True
+     A      C -21.5714 0.0355 -41.8062 -1.3367   True
+     B      C     -3.0 0.9149 -21.9278 15.9278  False
+-----------------------------------------------------
+
+Feature2についてTukeyのHSDテスト:
   Multiple Comparison of Means - Tukey HSD, FWER=0.05  
 =======================================================
 group1 group2 meandiff p-adj    lower    upper   reject
@@ -30,7 +40,7 @@ group1 group2 meandiff p-adj    lower    upper   reject
      B      C -13.0179 0.9416 -112.9435  86.9078  False
 -------------------------------------------------------
 
-特徴量2についてTukeyのHSDテスト:
+Feature3についてTukeyのHSDテスト:
   Multiple Comparison of Means - Tukey HSD, FWER=0.05  
 =======================================================
 group1 group2 meandiff p-adj    lower    upper   reject
@@ -40,7 +50,7 @@ group1 group2 meandiff p-adj    lower    upper   reject
      B      C  13.9073 0.9915  -269.729 297.5437  False
 -------------------------------------------------------
 
-特徴量3についてTukeyのHSDテスト:
+Feature4についてTukeyのHSDテスト:
    Multiple Comparison of Means - Tukey HSD, FWER=0.05    
 ==========================================================
 group1 group2  meandiff p-adj    lower      upper   reject
@@ -50,7 +60,7 @@ group1 group2  meandiff p-adj    lower      upper   reject
      B      C     333.7 0.8857 -1467.0161 2134.4161  False
 ----------------------------------------------------------
 
-特徴量4についてTukeyのHSDテスト:
+Feature5についてTukeyのHSDテスト:
 Multiple Comparison of Means - Tukey HSD, FWER=0.05
 ===================================================
 group1 group2 meandiff p-adj   lower  upper  reject
@@ -60,7 +70,7 @@ group1 group2 meandiff p-adj   lower  upper  reject
      B      C   1.0852 0.5953 -1.7156 3.8859  False
 ---------------------------------------------------
 
-特徴量5についてTukeyのHSDテスト:
+Feature6についてTukeyのHSDテスト:
  Multiple Comparison of Means - Tukey HSD, FWER=0.05 
 =====================================================
 group1 group2 meandiff p-adj   lower    upper  reject
@@ -70,7 +80,7 @@ group1 group2 meandiff p-adj   lower    upper  reject
      B      C  -4.0866 0.9387  -34.677 26.5037  False
 -----------------------------------------------------
 
-特徴量6についてTukeyのHSDテスト:
+Feature7についてTukeyのHSDテスト:
   Multiple Comparison of Means - Tukey HSD, FWER=0.05   
 ========================================================
 group1 group2  meandiff p-adj    lower    upper   reject
@@ -80,7 +90,7 @@ group1 group2  meandiff p-adj    lower    upper   reject
      B      C -156.5302  0.317 -423.1095 110.0491  False
 --------------------------------------------------------
 
-特徴量7についてTukeyのHSDテスト:
+Feature8についてTukeyのHSDテスト:
  Multiple Comparison of Means - Tukey HSD, FWER=0.05 
 =====================================================
 group1 group2 meandiff p-adj   lower    upper  reject
@@ -90,7 +100,7 @@ group1 group2 meandiff p-adj   lower    upper  reject
      B      C -15.5172 0.7781 -73.5364  42.502  False
 -----------------------------------------------------
 
-特徴量8についてTukeyのHSDテスト:
+Feature9についてTukeyのHSDテスト:
  Multiple Comparison of Means - Tukey HSD, FWER=0.05 
 =====================================================
 group1 group2 meandiff p-adj   lower    upper  reject
@@ -99,13 +109,3 @@ group1 group2 meandiff p-adj   lower    upper  reject
      A      C  49.8515 0.0469   0.6161 99.0869   True
      B      C   1.5532  0.996 -44.5023 47.6087  False
 -----------------------------------------------------
-
-特徴量9についてTukeyのHSDテスト:
-Multiple Comparison of Means - Tukey HSD, FWER=0.05
-===================================================
-group1 group2 meandiff p-adj   lower  upper  reject
----------------------------------------------------
-     A      B   0.0045 0.6374  -0.008  0.017  False
-     A      C   0.0058 0.5905  -0.009 0.0206  False
-     B      C   0.0013 0.9695 -0.0126 0.0152  False
----------------------------------------------------
