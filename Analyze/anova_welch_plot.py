@@ -2,12 +2,16 @@ import pandas as pd
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 from pingouin import welch_anova, pairwise_gameshowell
 from scipy.stats import kruskal, f_oneway
 from scikit_posthocs import posthoc_dunn
 import statsmodels.api as sm
 from statsmodels.formula.api import ols
 from statsmodels.stats.multicomp import pairwise_tukeyhsd
+from scipy import stats
+import matplotlib.lines as mlines
 
 # ファイル選択ダイアログを表示
 def select_file():
@@ -58,7 +62,7 @@ for feature in features:
     kruskal_results[feature] = kruskal_result
 
     # Dunn検定の修正（多重比較補正を追加）
-    dunn_result = posthoc_dunn(df, val_col=feature, group_col='Group', p_adjust='bonferroni')  # 'bonferroni'を変更可能
+    dunn_result = posthoc_dunn(df, val_col=feature, group_col='Group', p_adjust='holm')  # 'bonferroni'を変更可能
     dunn_results[feature] = dunn_result
 
     # 通常のANOVA
@@ -71,6 +75,30 @@ for feature in features:
     anova_table = sm.stats.anova_lm(model, typ=2)
     tukey_result = pairwise_tukeyhsd(df[feature], df['Group'])
     tukey_results[feature] = tukey_result
+
+    # 平均値と信頼区間の計算
+    means = df.groupby('Group')[feature].mean()
+    sems = df.groupby('Group')[feature].sem()  # 標準誤差
+    ci_lower = means - 1.96 * sems  # 95%信頼区間の下限
+    ci_upper = means + 1.96 * sems  # 95%信頼区間の上限
+
+    print(f"\n{feature} の平均値と信頼区間:")
+    for group in groups:
+        print(f"{group}: 平均={means[group]}, 信頼区間=({ci_lower[group]}, {ci_upper[group]})")
+
+    # 小提琴プロット
+    plt.figure(figsize=(10, 6))
+    sns.violinplot(x='Group', y=feature, fill=True, palette="deep", data=df, inner="box", hue="Group", inner_kws=dict(box_width=15, whis_width=3, color=".3"))
+
+    # 平均値と信頼区間をプロット
+    plt.errorbar(means.index, means, yerr=[means - ci_lower, ci_upper - means], elinewidth=2, capthick=1, markersize=7, markeredgewidth=2, fmt='x', color='#ba5858', capsize=5, label='Mean & 95% CI')
+    # Y軸だけにグリッドを表示
+    plt.grid(axis='y', linestyle='--', linewidth=1, alpha=0.3)
+    plt.title(f'{feature} - Violin Plot with Mean & 95% CI')
+    plt.xlabel('Group')
+    plt.ylabel(f'{feature}')
+    plt.legend()
+    plt.show()
 
 # 結果の表示
 print("\n通常のANOVAの結果:")
