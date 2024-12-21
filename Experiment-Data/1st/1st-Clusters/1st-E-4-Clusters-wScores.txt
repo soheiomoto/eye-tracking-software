@@ -1,3 +1,11 @@
+主成分の寄与率:
+主成分 1: 36.93%
+主成分 2: 27.31%
+
+累積寄与率:
+主成分 1まで: 36.93%
+主成分 2まで: 64.24%
+
 各クラスタの平均値と分散:
             得点率(％)                  解答時間(s)                平均速度(px/s)                     切り替え回数               サッケードの割合(％)           平均サッケード振幅(px)              最大サッケード振幅(px)                  視線の分布(px)              視線パスのフラクタル次元             平均視線パス直線性
               mean          var        mean          var         mean           var         mean           var        mean       var          mean          var          mean            var        mean          var         mean         var      mean       var
