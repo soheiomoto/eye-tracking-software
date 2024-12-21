@@ -1,0 +1,4 @@
+OS：windows11
+CPU：core i5-1135G7
+RAM：16GB
+GPU：2GB?(GeForce MX450)
