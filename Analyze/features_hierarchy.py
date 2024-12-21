@@ -1,9 +1,10 @@
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D  # 3Dプロット用
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
-import matplotlib.pyplot as plt
-from sklearn.decomposition import PCA
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 
@@ -45,20 +46,20 @@ valid_data = numerical_data.dropna()
 scaler = StandardScaler()
 scaled_data = scaler.fit_transform(valid_data)
 
-# 3. PCAで次元削減 (自動で重みを設定)
-pca = PCA(n_components=2)  # 2次元に削減
-pca_result = pca.fit_transform(scaled_data)  # データをPCAで変換
+# 2D PCAを3D PCAに変更
+pca_3d = PCA(n_components=3)  # 主成分の数を3に設定
+pca_result_3d = pca_3d.fit_transform(scaled_data)  # データをPCAで変換
 
 # 主成分の寄与率を出力
-explained_variance_ratio = pca.explained_variance_ratio_
-explained_variance_cumsum = np.cumsum(explained_variance_ratio)
+explained_variance_ratio_3d = pca_3d.explained_variance_ratio_
+explained_variance_cumsum_3d = np.cumsum(explained_variance_ratio_3d)
 
-print("\n主成分の寄与率:")
-for i, ratio in enumerate(explained_variance_ratio, start=1):
+print("\n主成分の寄与率（3次元）:")
+for i, ratio in enumerate(explained_variance_ratio_3d, start=1):
     print(f"主成分 {i}: {ratio:.2%}")
 
-print("\n累積寄与率:")
-for i, cumsum in enumerate(explained_variance_cumsum, start=1):
+print("\n累積寄与率（3次元）:")
+for i, cumsum in enumerate(explained_variance_cumsum_3d, start=1):
     print(f"主成分 {i}まで: {cumsum:.2%}")
 
 # 4. 距離行列の作成とクラスタリング (ウォード法)
@@ -107,9 +108,9 @@ print(cluster_distribution)
 
 # PCA成分の確認
 pca_components = pd.DataFrame(
-    pca.components_,
+    pca_3d.components_,
     columns=numerical_data.columns,
-    index=[f"PCA Component {i+1}" for i in range(pca.n_components_)]
+    index=[f"PCA Component {i+1}" for i in range(pca_3d.n_components_)]
 )
 print("\nPCA成分（主成分負荷量）:")
 print(pca_components)
@@ -136,29 +137,102 @@ centroid_colors = {
     7: '#ffd700'   # 濃い黄色
 }
 
-# プロット
-plt.figure(figsize=(10, 8))
+# 3Dプロット
+fig = plt.figure(figsize=(10, 8))
+ax = fig.add_subplot(111, projection='3d')
+
+# クラスタごとに色分けしてプロット
 for cluster in range(1, num_clusters + 1):
-    cluster_points = pca_result[clusters == cluster]
-    plt.scatter(
-        cluster_points[:, 0], cluster_points[:, 1],
+    cluster_points = pca_result_3d[clusters == cluster]
+    ax.scatter(
+        cluster_points[:, 0], cluster_points[:, 1], cluster_points[:, 2],
         label=f"Cluster {cluster}",
-        color=cluster_colors[cluster],  # クラスタデータの色
+        color=cluster_colors[cluster],
         alpha=0.6, s=50
     )
 
 # 重心を計算してプロット
 for cluster in range(1, num_clusters + 1):
-    cluster_data = pca_result[clusters == cluster]
+    cluster_data = pca_result_3d[clusters == cluster]
     centroid = cluster_data.mean(axis=0)
-    plt.scatter(
-        centroid[0], centroid[1],
-        marker='v', color=centroid_colors[cluster],  # 重心の色
+    ax.scatter(
+        centroid[0], centroid[1], centroid[2],
+        marker='v', color=centroid_colors[cluster],
         s=200, label=f"Centroid {cluster}"
     )
 
 # グラフの装飾
-plt.xlabel("PCA Component 1", fontsize=15)
-plt.ylabel("PCA Component 2", fontsize=15)
+ax.set_xlabel("PCA Component 1", fontsize=15)
+ax.set_ylabel("PCA Component 2", fontsize=15)
+ax.set_zlabel("PCA Component 3", fontsize=15)
+ax.legend(fontsize=10)
+plt.show()
+
+# PC1 vs PC2
+plt.figure(figsize=(8, 6))
+for cluster in range(1, num_clusters + 1):
+    cluster_points = pca_result_3d[clusters == cluster]
+    plt.scatter(
+        cluster_points[:, 0], cluster_points[:, 1],
+        label=f"Cluster {cluster}",
+        color=cluster_colors[cluster],
+        alpha=0.6, s=50
+    )
+    # 重心を計算してプロット
+    centroid = cluster_points.mean(axis=0)[:2]  # PC1とPC2の重心
+    plt.scatter(
+        centroid[0], centroid[1],
+        marker='v', color=centroid_colors[cluster],
+        s=200, label=f"Centroid {cluster}"
+    )
+plt.xlabel("PCA Component 1", fontsize=12)
+plt.ylabel("PCA Component 2", fontsize=12)
+plt.title("PC1 vs PC2", fontsize=14)
+plt.legend(fontsize=10)
+plt.show()
+
+# PC1 vs PC3
+plt.figure(figsize=(8, 6))
+for cluster in range(1, num_clusters + 1):
+    cluster_points = pca_result_3d[clusters == cluster]
+    plt.scatter(
+        cluster_points[:, 0], cluster_points[:, 2],
+        label=f"Cluster {cluster}",
+        color=cluster_colors[cluster],
+        alpha=0.6, s=50
+    )
+    # 重心を計算してプロット
+    centroid = cluster_points.mean(axis=0)[[0, 2]]  # PC1とPC3の重心
+    plt.scatter(
+        centroid[0], centroid[1],
+        marker='v', color=centroid_colors[cluster],
+        s=200, label=f"Centroid {cluster}"
+    )
+plt.xlabel("PCA Component 1", fontsize=12)
+plt.ylabel("PCA Component 3", fontsize=12)
+plt.title("PC1 vs PC3", fontsize=14)
+plt.legend(fontsize=10)
+plt.show()
+
+# PC2 vs PC3
+plt.figure(figsize=(8, 6))
+for cluster in range(1, num_clusters + 1):
+    cluster_points = pca_result_3d[clusters == cluster]
+    plt.scatter(
+        cluster_points[:, 1], cluster_points[:, 2],
+        label=f"Cluster {cluster}",
+        color=cluster_colors[cluster],
+        alpha=0.6, s=50
+    )
+    # 重心を計算してプロット
+    centroid = cluster_points.mean(axis=0)[[1, 2]]  # PC2とPC3の重心
+    plt.scatter(
+        centroid[0], centroid[1],
+        marker='v', color=centroid_colors[cluster],
+        s=200, label=f"Centroid {cluster}"
+    )
+plt.xlabel("PCA Component 2", fontsize=12)
+plt.ylabel("PCA Component 3", fontsize=12)
+plt.title("PC2 vs PC3", fontsize=14)
 plt.legend(fontsize=10)
 plt.show()
