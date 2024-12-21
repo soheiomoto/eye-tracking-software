@@ -2,7 +2,7 @@ from sklearn.decomposition import PCA
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
+from scipy.cluster.hierarchy import linkage, fcluster
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 import plotly.express as px
@@ -57,18 +57,70 @@ result_df = pd.DataFrame(pca_result_3d, columns=['PC1', 'PC2', 'PC3'])
 result_df['Cluster'] = clusters
 result_df['SubjectID'] = subject_ids[valid_data.index].values
 
+# クラスタ別の色設定
+cluster_colors = {
+    1: 'blue',
+    2: 'orange',
+    3: 'green',
+    4: 'red'
+}
+
+# 重心の色設定
+centroid_colors = {
+    1: 'darkblue',
+    2: 'darkorange',
+    3: 'darkgreen',
+    4: 'darkred'
+}
+
+# 各クラスタの重心を計算
+centroids = result_df.groupby('Cluster')[['PC1', 'PC2', 'PC3']].mean()
+
+# 記号の設定（クラスタごとに異なる記号を設定）
+cluster_symbols = {
+    1: 'circle',
+    2: 'circle',
+    3: 'circle',
+    4: 'circle'
+}
+
 # 3次元プロット（Plotly）
-fig_3d = px.scatter_3d(
-    result_df, x='PC1', y='PC2', z='PC3', color='Cluster', symbol='Cluster',
-    hover_name='SubjectID', title='3D PCA Cluster Visualization'
-)
-fig_3d.update_traces(marker=dict(size=6))
+fig_3d = go.Figure()
+
+# 各クラスタのデータポイントをプロット
+for cluster in range(1, num_clusters + 1):
+    cluster_data = result_df[result_df['Cluster'] == cluster]
+    fig_3d.add_trace(go.Scatter3d(
+        x=cluster_data['PC1'],
+        y=cluster_data['PC2'],
+        z=cluster_data['PC3'],
+        mode='markers',
+        marker=dict(size=6, color=cluster_colors[cluster], symbol=cluster_symbols[cluster]),
+        name=f'Cluster {cluster}',
+        hovertext=cluster_data['SubjectID']
+    ))
+
+# 各クラスタの重心をプロット
+for cluster in range(1, num_clusters + 1):
+    centroid = centroids.loc[cluster]
+    fig_3d.add_trace(go.Scatter3d(
+        x=[centroid['PC1']],
+        y=[centroid['PC2']],
+        z=[centroid['PC3']],
+        mode='markers',
+        marker=dict(size=7, color=centroid_colors[cluster], symbol='x', line=dict(width=3, color='black')),
+        name=f'Centroid {cluster}'
+    ))
+
+# グラフのレイアウト
 fig_3d.update_layout(
+    title='3D PCA Cluster Visualization with Centroids',
     scene=dict(
         xaxis_title='PCA Component 1',
         yaxis_title='PCA Component 2',
         zaxis_title='PCA Component 3'
-    )
+    ),
+    legend=dict(title="Clusters")
 )
 
 # グラフを一時ファイルに保存してブラウザで表示
@@ -84,5 +136,5 @@ def save_plotly_figure(fig, filename):
     fig.write_html(filename)
 
 # 一時ファイルではなく、GitHubにアップロード用のファイル名で保存
-file_path_to_save = "pca_3d_plot.html"
+file_path_to_save = "PCA_3D_Graph.html"
 save_plotly_figure(fig_3d, file_path_to_save)
