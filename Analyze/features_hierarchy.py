@@ -49,6 +49,18 @@ scaled_data = scaler.fit_transform(valid_data)
 pca = PCA(n_components=2)  # 2次元に削減
 pca_result = pca.fit_transform(scaled_data)  # データをPCAで変換
 
+# 主成分の寄与率を出力
+explained_variance_ratio = pca.explained_variance_ratio_
+explained_variance_cumsum = np.cumsum(explained_variance_ratio)
+
+print("\n主成分の寄与率:")
+for i, ratio in enumerate(explained_variance_ratio, start=1):
+    print(f"主成分 {i}: {ratio:.2%}")
+
+print("\n累積寄与率:")
+for i, cumsum in enumerate(explained_variance_cumsum, start=1):
+    print(f"主成分 {i}まで: {cumsum:.2%}")
+
 # 4. 距離行列の作成とクラスタリング (ウォード法)
 linkage_matrix = linkage(scaled_data, method='ward')
 
