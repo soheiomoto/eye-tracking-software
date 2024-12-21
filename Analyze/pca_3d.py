@@ -108,7 +108,7 @@ for cluster in range(1, num_clusters + 1):
         y=[centroid['PC2']],
         z=[centroid['PC3']],
         mode='markers',
-        marker=dict(size=7, color=centroid_colors[cluster], symbol='x', line=dict(width=3, color='black')),
+        marker=dict(size=7, color=centroid_colors[cluster], symbol='x', line=dict(width=1, color='black')),
         name=f'Centroid {cluster}'
     ))
 
