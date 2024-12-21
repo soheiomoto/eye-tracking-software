@@ -79,20 +79,6 @@ def display_plotly_figure(fig):
 
 display_plotly_figure(fig_3d)
 
-# 主成分の寄与率を表示
-print("\n主成分の寄与率（3次元）:")
-for i, ratio in enumerate(explained_variance_ratio_3d, start=1):
-    print(f"主成分 {i}: {ratio:.2%}")
-
-# PCA成分（主成分負荷量）の表示
-pca_components = pd.DataFrame(
-    pca_3d.components_,
-    columns=numerical_data.columns,
-    index=[f"PCA Component {i+1}" for i in range(pca_3d.n_components_)]
-)
-print("\nPCA成分（主成分負荷量）:")
-print(pca_components)
-
 # 既存の3次元プロットを生成
 def save_plotly_figure(fig, filename):
     fig.write_html(filename)
