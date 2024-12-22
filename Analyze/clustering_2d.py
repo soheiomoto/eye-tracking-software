@@ -187,7 +187,6 @@ for cluster in range(1, num_clusters + 1):
     )
 plt.xlabel("PCA Component 1", fontsize=12)
 plt.ylabel("PCA Component 2", fontsize=12)
-plt.title("PC1 vs PC2", fontsize=14)
 plt.legend(fontsize=10)
 plt.show()
 
@@ -210,7 +209,6 @@ for cluster in range(1, num_clusters + 1):
     )
 plt.xlabel("PCA Component 1", fontsize=12)
 plt.ylabel("PCA Component 3", fontsize=12)
-plt.title("PC1 vs PC3", fontsize=14)
 plt.legend(fontsize=10)
 plt.show()
 
@@ -233,6 +231,5 @@ for cluster in range(1, num_clusters + 1):
     )
 plt.xlabel("PCA Component 2", fontsize=12)
 plt.ylabel("PCA Component 3", fontsize=12)
-plt.title("PC2 vs PC3", fontsize=14)
 plt.legend(fontsize=10)
 plt.show()
