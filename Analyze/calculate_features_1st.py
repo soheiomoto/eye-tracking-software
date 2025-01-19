@@ -1,3 +1,7 @@
+'''
+This module is for 1st term experiment data
+'''
+
 # 必要なモジュールのインポート
 import pandas as pd
 import numpy as np

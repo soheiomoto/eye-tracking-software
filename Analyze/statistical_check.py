@@ -1,3 +1,4 @@
+# 必要なモジュールのインポート
 import pandas as pd
 import numpy as np
 import scipy.stats as stats
@@ -37,7 +38,7 @@ def check_normality(data):
     return p_value
 
 # 等分散性の検定: Levene検定
-def check_homogeneity_of_variance(*args):
+def check_variance(*args):
     stat, p_value = levene(*args)
     return p_value
 
@@ -55,7 +56,7 @@ for feature in features:
         print(f'  {group}グループのp値: {normality_p_values[i]}')
 
     # 等分散性の検定（Levene）
-    homogeneity_p_value = check_homogeneity_of_variance(*group_data)
+    homogeneity_p_value = check_variance(*group_data)
     print(f'等分散性の検定 (Levene): p値 = {homogeneity_p_value}')
 
     print("\n")

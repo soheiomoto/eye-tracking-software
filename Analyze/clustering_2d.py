@@ -1,3 +1,4 @@
+# 必要なモジュールのインポート
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # 3Dプロット用

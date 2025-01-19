@@ -1,11 +1,5 @@
 '''
 This module is for 1st term experiment data
-
-  Dependencies:
-  - numpy                     2.1.2
-  - pandas                    2.2.3
-  - matplotlib                3.9.2
-  - scipy                     1.14.1
 '''
 
 # 必要なモジュールのインポート
